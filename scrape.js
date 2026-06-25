@@ -59,9 +59,13 @@ async function getImdbId(tmdbId) {
     }
 }
 
-// YENİ: Link kontrolü artık sadece IMDB ID'sini alıp formatı döndürecek
-function createVidmodyLink(imdbId) {
-    // IMDB ID'den tt kısmını al (tt11378946 gibi)
+// VS linki ile kontrol et (film var mı diye)
+function createVsLink(imdbId) {
+    return `https://vidmody.com/vs/${imdbId}`;
+}
+
+// MM linki ile M3U'ya ekle (final link)
+function createMmLink(imdbId) {
     const cleanImdb = imdbId.replace('tt', '');
     return `https://vidmody.com/mm/tt${cleanImdb}/rumain1080/index-v1-a1.m3u8`;
 }
@@ -91,14 +95,16 @@ async function fetchFromVidmody() {
             for (const movie of response.data.results) {
                 const imdbId = await getImdbId(movie.id);
                 if (imdbId) {
-                    // YENİ: Link oluştur
-                    const link = createVidmodyLink(imdbId);
-                    if (await checkLink(link)) {
+                    // Önce VS ile kontrol et
+                    const vsLink = createVsLink(imdbId);
+                    if (await checkLink(vsLink)) {
+                        // Film varsa MM linkini oluştur ve ekle
+                        const mmLink = createMmLink(imdbId);
                         const genreInfo = await getMovieGenres(movie.id);
                         movies.push({
                             title: movie.title,
                             year: "Vizyonda",
-                            link,
+                            link: mmLink,
                             poster: movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : "",
                             rating: movie.vote_average || 0,
                             mainGenre: genreInfo.mainGenre,
@@ -126,14 +132,16 @@ async function fetchFromVidmody() {
                 for (const movie of response.data.results) {
                     const imdbId = await getImdbId(movie.id);
                     if (imdbId) {
-                        // YENİ: Link oluştur
-                        const link = createVidmodyLink(imdbId);
-                        if (await checkLink(link)) {
+                        // Önce VS ile kontrol et
+                        const vsLink = createVsLink(imdbId);
+                        if (await checkLink(vsLink)) {
+                            // Film varsa MM linkini oluştur ve ekle
+                            const mmLink = createMmLink(imdbId);
                             const genreInfo = await getMovieGenres(movie.id);
                             movies.push({
                                 title: movie.title,
                                 year,
-                                link,
+                                link: mmLink,
                                 poster: movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : "",
                                 rating: movie.vote_average || 0,
                                 mainGenre: genreInfo.mainGenre,
