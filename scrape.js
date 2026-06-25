@@ -1,6 +1,5 @@
 const axios = require('axios');
 const fs = require('fs');
-const puppeteer = require('puppeteer');
 
 const API_KEY = '5a98ac2ab1eeba8124c3f6a10f4f13ab';
 
@@ -60,115 +59,28 @@ async function getImdbId(tmdbId) {
     }
 }
 
-// PUPPETEER ile gerçek .m3u8 linkini bul
-async function getRealVideoLink(imdbId) {
-    const vsUrl = `https://vidmody.com/vs/${imdbId}`;
-    let browser = null;
-    
+// VS linki ile kontrol et (film var mı diye)
+function createVsLink(imdbId) {
+    return `https://vidmody.com/vs/${imdbId}`;
+}
+
+// MM linki ile M3U'ya ekle (hepsi için aynı format)
+function createMmLink(imdbId) {
+    const cleanImdb = imdbId.replace('tt', '');
+    return `https://vidmody.com/mm/tt${cleanImdb}/main/index.m3u8`;
+}
+
+async function checkLink(url) {
+    if (failedLinks.has(url)) return false;
     try {
-        console.log(`   🔍 ${imdbId} için link aranıyor...`);
-        
-        // Puppeteer başlat
-        browser = await puppeteer.launch({
-            headless: true,
-            args: [
-                '--no-sandbox',
-                '--disable-setuid-sandbox',
-                '--disable-dev-shm-usage',
-                '--disable-gpu'
-            ]
+        await axios.head(url, { 
+            timeout: 5000,
+            headers: { 'User-Agent': 'Mozilla/5.0' }
         });
-        
-        const page = await browser.newPage();
-        
-        // User-Agent ayarla
-        await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
-        
-        // Sayfayı aç ve bekle
-        await page.goto(vsUrl, { 
-            waitUntil: 'networkidle2', 
-            timeout: 30000 
-        });
-        
-        // Sayfadaki tüm .m3u8 linklerini ara
-        const videoLink = await page.evaluate(() => {
-            // 1. Script içindeki linkler
-            const scripts = document.querySelectorAll('script');
-            for (const script of scripts) {
-                const content = script.textContent;
-                if (content) {
-                    // .m3u8 ile biten linkleri bul
-                    const match = content.match(/https?:\/\/[^\s"']+\.m3u8[^\s"']*/);
-                    if (match) return match[0];
-                }
-            }
-            
-            // 2. iframe içindeki linkler
-            const iframes = document.querySelectorAll('iframe');
-            for (const iframe of iframes) {
-                const src = iframe.src;
-                if (src && src.includes('.m3u8')) return src;
-            }
-            
-            // 3. video etiketleri
-            const videos = document.querySelectorAll('video source, video');
-            for (const video of videos) {
-                const src = video.src || video.getAttribute('src');
-                if (src && src.includes('.m3u8')) return src;
-            }
-            
-            // 4. a etiketleri
-            const links = document.querySelectorAll('a');
-            for (const link of links) {
-                const href = link.href;
-                if (href && href.includes('.m3u8')) return href;
-            }
-            
-            return null;
-        });
-        
-        if (videoLink) {
-            console.log(`   ✅ Link bulundu: ${videoLink.substring(0, 60)}...`);
-            return videoLink;
-        }
-        
-        console.log(`   ⚠️ Sayfada link bulunamadı, varsayılan formatlar deneniyor...`);
-        
-        // Varsayılan formatları dene (çalışanı bul)
-        const cleanImdb = imdbId.replace('tt', '');
-        const possibleFormats = [
-            `https://vidmody.com/mm/tt${cleanImdb}/main/index-v1-a1.m3u8`,
-            `https://vidmody.com/mm/tt${cleanImdb}/rumain1080/index-v1-a1.m3u8`,
-            `https://vidmody.com/mm/tt${cleanImdb}/ccmain1080/index-v1-a1.m3u8`,
-            `https://vidmody.com/mm/tt${cleanImdb}/main_1080p/index-v1-a1.m3u8`,
-            `https://vidmody.com/mm/tt${cleanImdb}/index-v1-a1.m3u8`,
-            `https://vidmody.com/mm/tt${cleanImdb}/playlist.m3u8`,
-            `https://vidmody.com/mm/tt${cleanImdb}/video.m3u8`
-        ];
-        
-        for (const format of possibleFormats) {
-            try {
-                await axios.head(format, { 
-                    timeout: 3000,
-                    headers: { 'User-Agent': 'Mozilla/5.0' }
-                });
-                console.log(`   ✅ Varsayılan format çalışıyor: ${format}`);
-                return format;
-            } catch (e) {
-                continue;
-            }
-        }
-        
-        console.log(`   ❌ ${imdbId} için link bulunamadı!`);
-        return null;
-        
-    } catch (error) {
-        console.log(`   ❌ ${imdbId} için hata: ${error.message}`);
-        return null;
-    } finally {
-        if (browser) {
-            await browser.close();
-        }
+        return true;
+    } catch {
+        failedLinks.add(url);
+        return false;
     }
 }
 
@@ -186,13 +98,16 @@ async function fetchFromVidmody() {
             for (const movie of response.data.results) {
                 const imdbId = await getImdbId(movie.id);
                 if (imdbId) {
-                    const realLink = await getRealVideoLink(imdbId);
-                    if (realLink) {
+                    // Önce VS ile kontrol et
+                    const vsLink = createVsLink(imdbId);
+                    if (await checkLink(vsLink)) {
+                        // Film varsa MM linkini oluştur ve ekle
+                        const mmLink = createMmLink(imdbId);
                         const genreInfo = await getMovieGenres(movie.id);
                         movies.push({
                             title: movie.title,
                             year: "Vizyonda",
-                            link: realLink,
+                            link: mmLink,
                             poster: movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : "",
                             rating: movie.vote_average || 0,
                             mainGenre: genreInfo.mainGenre,
@@ -200,9 +115,11 @@ async function fetchFromVidmody() {
                             source: 'vidmody'
                         });
                         console.log(`   ✓ ${movie.title} (${genreInfo.mainGenre}) ⭐ ${movie.vote_average}`);
+                    } else {
+                        console.log(`   ✗ ${movie.title} - VS linki çalışmıyor`);
                     }
                 }
-                await new Promise(r => setTimeout(r, 100));
+                await new Promise(r => setTimeout(r, 30));
             }
             vizyonPage++;
         } catch(e) { break; }
@@ -220,13 +137,16 @@ async function fetchFromVidmody() {
                 for (const movie of response.data.results) {
                     const imdbId = await getImdbId(movie.id);
                     if (imdbId) {
-                        const realLink = await getRealVideoLink(imdbId);
-                        if (realLink) {
+                        // Önce VS ile kontrol et
+                        const vsLink = createVsLink(imdbId);
+                        if (await checkLink(vsLink)) {
+                            // Film varsa MM linkini oluştur ve ekle
+                            const mmLink = createMmLink(imdbId);
                             const genreInfo = await getMovieGenres(movie.id);
                             movies.push({
                                 title: movie.title,
                                 year,
-                                link: realLink,
+                                link: mmLink,
                                 poster: movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : "",
                                 rating: movie.vote_average || 0,
                                 mainGenre: genreInfo.mainGenre,
@@ -237,7 +157,7 @@ async function fetchFromVidmody() {
                             console.log(`   ✓ ${movie.title} (${year} - ${genreInfo.mainGenre}) ⭐ ${movie.vote_average || "?"}`);
                         }
                     }
-                    await new Promise(r => setTimeout(r, 100));
+                    await new Promise(r => setTimeout(r, 25));
                 }
             } catch(e) { break; }
         }
@@ -304,7 +224,6 @@ function createM3U(movies) {
 
 async function scrape() {
     console.log("🎬 FİLM ARŞİVİ TARANIYOR (VİDMODY)...\n");
-    console.log("⏳ Bu işlem biraz zaman alabilir (Puppeteer kullanılıyor)...\n");
     const movies = await fetchFromVidmody();
     const total = createM3U(movies);
     console.log(`\n✅ TAMAMLANDI!`);
