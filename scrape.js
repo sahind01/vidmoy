@@ -1,7 +1,7 @@
 const axios = require('axios');
 const fs = require('fs');
 
-const API_KEY = process.env.TMDB_API_KEY;
+const API_KEY = '5a98ac2ab1eeba8124c3f6a10f4f13ab';
 
 if (!API_KEY) {
     console.error("❌ TMDB API anahtarı bulunamadı!");
