@@ -21180,5 +21180,169 @@
                 "link": "https://vidmody.com/vs/tt0460681/s15/e20"
             }
         ]
+    },
+    {
+        "id": 255859,
+        "name": "Wayward",
+        "poster": "https://image.tmdb.org/t/p/w500/t6bk8g9DsITWZXwnw9jrA9RDdCB.jpg",
+        "category": "Son Eklenenler",
+        "episodes": [
+            {
+                "season": 1,
+                "episode": 1,
+                "link": "https://vidmody.com/vs/tt27427326/s1/e01"
+            },
+            {
+                "season": 1,
+                "episode": 2,
+                "link": "https://vidmody.com/vs/tt27427326/s1/e02"
+            },
+            {
+                "season": 1,
+                "episode": 3,
+                "link": "https://vidmody.com/vs/tt27427326/s1/e03"
+            },
+            {
+                "season": 1,
+                "episode": 4,
+                "link": "https://vidmody.com/vs/tt27427326/s1/e04"
+            },
+            {
+                "season": 1,
+                "episode": 5,
+                "link": "https://vidmody.com/vs/tt27427326/s1/e05"
+            },
+            {
+                "season": 1,
+                "episode": 6,
+                "link": "https://vidmody.com/vs/tt27427326/s1/e06"
+            },
+            {
+                "season": 1,
+                "episode": 7,
+                "link": "https://vidmody.com/vs/tt27427326/s1/e07"
+            },
+            {
+                "season": 1,
+                "episode": 8,
+                "link": "https://vidmody.com/vs/tt27427326/s1/e08"
+            }
+        ]
+    },
+    {
+        "id": 240993,
+        "name": "Ransom Canyon",
+        "poster": "https://image.tmdb.org/t/p/w500/vp6A0mthGwZmnowmLxqNPF0lVRN.jpg",
+        "category": "Son Eklenenler",
+        "episodes": [
+            {
+                "season": 1,
+                "episode": 1,
+                "link": "https://vidmody.com/vs/tt28088031/s1/e01"
+            },
+            {
+                "season": 1,
+                "episode": 2,
+                "link": "https://vidmody.com/vs/tt28088031/s1/e02"
+            },
+            {
+                "season": 1,
+                "episode": 3,
+                "link": "https://vidmody.com/vs/tt28088031/s1/e03"
+            },
+            {
+                "season": 1,
+                "episode": 4,
+                "link": "https://vidmody.com/vs/tt28088031/s1/e04"
+            },
+            {
+                "season": 1,
+                "episode": 5,
+                "link": "https://vidmody.com/vs/tt28088031/s1/e05"
+            },
+            {
+                "season": 1,
+                "episode": 6,
+                "link": "https://vidmody.com/vs/tt28088031/s1/e06"
+            },
+            {
+                "season": 1,
+                "episode": 7,
+                "link": "https://vidmody.com/vs/tt28088031/s1/e07"
+            },
+            {
+                "season": 1,
+                "episode": 8,
+                "link": "https://vidmody.com/vs/tt28088031/s1/e08"
+            },
+            {
+                "season": 1,
+                "episode": 9,
+                "link": "https://vidmody.com/vs/tt28088031/s1/e09"
+            },
+            {
+                "season": 1,
+                "episode": 10,
+                "link": "https://vidmody.com/vs/tt28088031/s1/e10"
+            }
+        ]
+    },
+    {
+        "id": 131835,
+        "name": "Nautilus (2024)",
+        "poster": "https://image.tmdb.org/t/p/w500/eBHzItKQNfPdt2GL4LcHJy8P1sH.jpg",
+        "category": "Diziler | Aksiyon & Macera",
+        "episodes": [
+            {
+                "season": 1,
+                "episode": 1,
+                "link": "https://vidmody.com/vs/tt15286302/s1/e01"
+            },
+            {
+                "season": 1,
+                "episode": 2,
+                "link": "https://vidmody.com/vs/tt15286302/s1/e02"
+            },
+            {
+                "season": 1,
+                "episode": 3,
+                "link": "https://vidmody.com/vs/tt15286302/s1/e03"
+            },
+            {
+                "season": 1,
+                "episode": 4,
+                "link": "https://vidmody.com/vs/tt15286302/s1/e04"
+            },
+            {
+                "season": 1,
+                "episode": 5,
+                "link": "https://vidmody.com/vs/tt15286302/s1/e05"
+            },
+            {
+                "season": 1,
+                "episode": 6,
+                "link": "https://vidmody.com/vs/tt15286302/s1/e06"
+            },
+            {
+                "season": 1,
+                "episode": 7,
+                "link": "https://vidmody.com/vs/tt15286302/s1/e07"
+            },
+            {
+                "season": 1,
+                "episode": 8,
+                "link": "https://vidmody.com/vs/tt15286302/s1/e08"
+            },
+            {
+                "season": 1,
+                "episode": 9,
+                "link": "https://vidmody.com/vs/tt15286302/s1/e09"
+            },
+            {
+                "season": 1,
+                "episode": 10,
+                "link": "https://vidmody.com/vs/tt15286302/s1/e10"
+            }
+        ]
     }
 ]
