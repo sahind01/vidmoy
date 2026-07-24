@@ -21812,5 +21812,28 @@
                 "link": "https://vidmody.com/vs/tt15477488/s1/e08"
             }
         ]
+    },
+    {
+        "id": 223530,
+        "name": "Star Trek: Starfleet Academy",
+        "poster": "https://image.tmdb.org/t/p/w500/m4JnADIJkF5ck6jq7GUEcPBKxd0.jpg",
+        "category": "Son Eklenenler",
+        "episodes": [
+            {
+                "season": 1,
+                "episode": 1,
+                "link": "https://vidmody.com/vs/tt8622160/s1/e01"
+            },
+            {
+                "season": 1,
+                "episode": 2,
+                "link": "https://vidmody.com/vs/tt8622160/s1/e02"
+            },
+            {
+                "season": 1,
+                "episode": 3,
+                "link": "https://vidmody.com/vs/tt8622160/s1/e03"
+            }
+        ]
     }
 ]
