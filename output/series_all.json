@@ -22261,5 +22261,53 @@
                 "link": "https://vidmody.com/vs/tt13930822/s2/e08"
             }
         ]
+    },
+    {
+        "id": 246412,
+        "name": "The Copenhagen Test",
+        "poster": "https://image.tmdb.org/t/p/w500/iAjcpCceLixP5k9lRw1y4fhsLwV.jpg",
+        "category": "Son Eklenenler",
+        "episodes": [
+            {
+                "season": 1,
+                "episode": 1,
+                "link": "https://vidmody.com/vs/tt31314791/s1/e01"
+            },
+            {
+                "season": 1,
+                "episode": 2,
+                "link": "https://vidmody.com/vs/tt31314791/s1/e02"
+            },
+            {
+                "season": 1,
+                "episode": 3,
+                "link": "https://vidmody.com/vs/tt31314791/s1/e03"
+            },
+            {
+                "season": 1,
+                "episode": 4,
+                "link": "https://vidmody.com/vs/tt31314791/s1/e04"
+            },
+            {
+                "season": 1,
+                "episode": 5,
+                "link": "https://vidmody.com/vs/tt31314791/s1/e05"
+            },
+            {
+                "season": 1,
+                "episode": 6,
+                "link": "https://vidmody.com/vs/tt31314791/s1/e06"
+            },
+            {
+                "season": 1,
+                "episode": 7,
+                "link": "https://vidmody.com/vs/tt31314791/s1/e07"
+            },
+            {
+                "season": 1,
+                "episode": 8,
+                "link": "https://vidmody.com/vs/tt31314791/s1/e08"
+            }
+        ]
     }
 ]
