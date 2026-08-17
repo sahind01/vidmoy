@@ -1,0 +1,19 @@
+{
+  "canlitv": [
+    { "name": "Zeus Tv", "url": "https://raw.githubusercontent.com/panorea744/stawerlo/main/ventino.m3u", "type": "m3u" },
+ { "name": "Rec Tv", "url": "RECTV_LIVE", "type": "m3u" },
+ { "name": "TURKEY TV", "url": "https://raw.githubusercontent.com/iptv-org/iptv/master/streams/tr.m3u", "type": "m3u" },
+ { "name": "Amerika Tv", "url": "https://raw.githubusercontent.com/iptv-org/iptv/master/streams/us.m3u", "type": "m3u" },
+ { "name": "İngiltere Tv", "url": "https://raw.githubusercontent.com/iptv-org/iptv/master/streams/gb.m3u", "type": "m3u" },
+ { "name": "Germany Tv", "url": "https://raw.githubusercontent.com/iptv-org/iptv/master/streams/de.m3u", "type": "m3u" },
+ { "name": "Franse Tv", "url": "https://raw.githubusercontent.com/iptv-org/iptv/master/streams/fr.m3u", "type": "m3u" },
+ { "name": "İspanya Tv", "url": "https://raw.githubusercontent.com/iptv-org/iptv/master/streams/es.m3u", "type": "m3u" },
+ { "name": "İtalya Tv", "url": "https://raw.githubusercontent.com/iptv-org/iptv/master/streams/it.m3u", "type": "m3u" },
+ { "name": "Vizon Go Tv", "url": "https://vizongo.mutlumedya.workers.dev/index.m3u", "type": "m3u" },
+ { "name": "Maç Kolik Tv", "url": "https://lol.mutlumedya.workers.dev/canlikolik.m3u", "type": "m3u" },
+     { "name": "Hd Tv", "url": "https://raw.githubusercontent.com/feroxx/test/refs/heads/main/Kanallar/canlitv.m3u", "type": "m3u" }
+    
+ 
+  
+  ]
+}
