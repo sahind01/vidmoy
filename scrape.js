@@ -61,7 +61,7 @@ async function getImdbId(tmdbId) {
 
 // Sadece VS linki ile kontrol et
 function createVsLink(imdbId) {
-    return `https://vidmody.com/vs/${imdbId}`;
+    return `http://ha.vixolity.com/vs/${imdbId}`;
 }
 
 async function checkLink(url) {
