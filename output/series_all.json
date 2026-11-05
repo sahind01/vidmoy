@@ -23667,5 +23667,36 @@
                 "link": "http://ha.vixolity.com/vs/tt0118414/s1/e01"
             }
         ]
+    },
+    {
+        "id": 316544,
+        "name": "Ronaldinho Efsanesi",
+        "poster": "https://image.tmdb.org/t/p/w500/zYdSaQLM8w3NMuBnjRPjqpiUnyp.jpg",
+        "category": "Son Eklenenler",
+        "episodes": [
+            {
+                "season": 1,
+                "episode": 1,
+                "link": "http://ha.vixolity.com/vs/tt37041367/s1/e01"
+            }
+        ]
+    },
+    {
+        "id": 93405,
+        "name": "Squid Game (2021)",
+        "poster": "https://image.tmdb.org/t/p/w500/yACIAqAkSLkX4coHafpyLWAtQjw.jpg",
+        "category": "Diziler | Aksiyon & Macera",
+        "episodes": [
+            {
+                "season": 1,
+                "episode": 1,
+                "link": "http://ha.vixolity.com/vs/tt10919420/s1/e01"
+            },
+            {
+                "season": 1,
+                "episode": 2,
+                "link": "http://ha.vixolity.com/vs/tt10919420/s1/e02"
+            }
+        ]
     }
 ]
