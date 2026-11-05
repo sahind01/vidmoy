@@ -7,17 +7,16 @@ import requests
 # --- AYARLAR ---
 API_KEY = "6fabef7bd74e01efcd81d35c39c4a049"
 BASE_URL = "https://api.themoviedb.org/3"
-VIDMODY_BASE = "https://vidmody.com/vs"
+# VIDMODY yerine yeni base URL
+VIXOLITY_BASE = "http://ha.vixolity.com/vs"
 IMG_URL = "https://image.tmdb.org/t/p/w500"
 
 MAX_WORKERS = 30
 PAGE_DEPTH_ARCHIVE = 3
 PAGE_DEPTH_NEW = 10
 
-# --- GÜVENLİK AYARI (YENİ) ---
-# GitHub Actions genelde 6 saat (21600 sn) verir.
-# Biz 5.5 saatte (19800 sn) duralım ki kaydetmeye ve yüklemeye vakit kalsın.
-MAX_RUN_TIME = 19800 
+# --- GÜVENLİK AYARI ---
+MAX_RUN_TIME = 19800  # 5.5 saat
 
 os.makedirs("output/diziler", exist_ok=True)
 JSON_FILE = "output/series_all.json"
@@ -29,7 +28,7 @@ HEADERS = {
 
 # Tarih ve Kategori Ayarları
 NEW_YEARS = [2026, 2025]
-ARCHIVE_YEARS = range(2024, 1990, -1) 
+ARCHIVE_YEARS = range(2024, 1990, -1)
 
 GENRES = {
     10759: "Aksiyon & Macera",
@@ -97,19 +96,16 @@ def save_files(all_series_data, m3u_entries):
     """Verileri diske kaydeder"""
     print("\n--- GÜVENLİ KAYIT YAPILIYOR ---")
     
-    # JSON Kaydet
     with open(JSON_FILE, "w", encoding="utf-8") as f:
         json.dump(all_series_data, f, ensure_ascii=False, indent=4)
     
-    # M3U Kaydet
     with open(M3U_FILE, "w", encoding="utf-8") as f:
         f.write("#EXTM3U\n")
-        # Sıralama
         def sort_key(item):
             cat = item.get("group_title", "")
             if cat == "Son Eklenenler": return 0
             if "Yerli" in cat: return 1
-            return 2 
+            return 2
             
         for item in sorted(m3u_entries, key=sort_key):
             f.write(f'#EXTINF:-1 group-title="{item["group"]}" tvg-logo="{item["logo"]}", {item["name"]}\n')
@@ -128,17 +124,12 @@ def process_series_batch(api_url, category_name, existing_ids, all_series_data, 
         if not unknown_series: return True 
 
         for item in unknown_series:
-            # --- ZAMAN KONTROLÜ (HER DİZİDE KONTROL ET) ---
-            # Eğer global start_time değişkenini okuyamazsak diye parametre taşımak yerine
-            # basitçe main fonksiyonundaki kontrolü bekleyebiliriz ama 
-            # buraya da koymak en güvenlisidir.
-            pass # Burası sadece yapı için, asıl kontrol main döngüsünde.
-
             tmdb_id = item['id']
             imdb_id = get_imdb_id(tmdb_id)
             if not imdb_id or imdb_id in existing_ids: continue
 
-            test_link = f"{VIDMODY_BASE}/{imdb_id}/s1/e01"
+            # VIXOLITY link yapısı: /{imdb_id}/s{sezon}/e{bölüm}
+            test_link = f"{VIXOLITY_BASE}/{imdb_id}/s1/e01"
             if not check_single_url(test_link): continue
 
             print(f"   > Bulundu: {item['name']}")
@@ -160,7 +151,7 @@ def process_series_batch(api_url, category_name, existing_ids, all_series_data, 
                 ep_count = season['episode_count']
                 if s_num > 0:
                     for ep in range(1, ep_count + 1):
-                        link = f"{VIDMODY_BASE}/{imdb_id}/s{s_num}/e{ep:02d}"
+                        link = f"{VIXOLITY_BASE}/{imdb_id}/s{s_num}/e{ep:02d}"
                         all_episode_links.append(link)
                         episode_map[link] = {"s": s_num, "e": ep}
             
@@ -217,7 +208,6 @@ def main():
                 "group_title": s.get('category', 'Diziler')
             })
 
-    # --- SÜRE DOLDU MU KONTROLÜ İÇİN FONKSİYON ---
     def is_time_up():
         if (time.time() - start_time) > MAX_RUN_TIME:
             print(f"\n!!! SÜRE DOLDU ({int((time.time() - start_time)/60)} dk). GÜVENLİ ÇIKIŞ YAPILIYOR !!!")
@@ -227,11 +217,11 @@ def main():
     # 1. VİTRİN
     print("\n=== BÖLÜM 1: VİTRİN ===")
     for year in NEW_YEARS:
-        if is_time_up(): break # Süre kontrolü
+        if is_time_up(): break
         
         print(f"> {year}...")
         for page in range(1, PAGE_DEPTH_NEW + 1):
-            if is_time_up(): break # Sayfa geçişinde kontrol
+            if is_time_up(): break
             url = f"{BASE_URL}/discover/tv?api_key={API_KEY}&language=tr-TR&sort_by=popularity.desc&first_air_date_year={year}&page={page}"
             process_series_batch(url, "Son Eklenenler", existing_ids, all_series_data, m3u_entries)
 
@@ -247,21 +237,16 @@ def main():
     if not is_time_up():
         print(f"\n=== BÖLÜM 3: ARŞİV ===")
         for year in ARCHIVE_YEARS:
-            if is_time_up(): break # Yıl bitince kontrol
+            if is_time_up(): break
             print(f"\n> Yıl: {year}...")
             
             for genre_id, genre_name in GENRES.items():
-                if is_time_up(): break # Tür bitince kontrol
+                if is_time_up(): break
                 
                 for page in range(1, PAGE_DEPTH_ARCHIVE + 1):
-                    # Burada her sayfa isteğinde de kontrol edebiliriz ama
-                    # yıl/tür başlarında kontrol etmek genelde yeterlidir.
                     url = f"{BASE_URL}/discover/tv?api_key={API_KEY}&language=tr-TR&sort_by=popularity.desc&first_air_date_year={year}&with_genres={genre_id}&page={page}"
                     process_series_batch(url, f"Diziler | {genre_name}", existing_ids, all_series_data, m3u_entries, add_year=True)
 
-    # --- SONUÇ ---
-    # Döngü ya bittiği için ya da 'break' ile kırıldığı için buraya gelir.
-    # Her iki durumda da KAYDETME işlemi çalışır.
     save_files(all_series_data, m3u_entries)
     
     print(f"Toplam Süre: {int(time.time() - start_time)} saniye.")
