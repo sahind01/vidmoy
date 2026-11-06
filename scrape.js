@@ -86,7 +86,7 @@ async function fetchFromVidmody() {
     console.log("\n📅 Tüm filmler taranıyor (1900'den günümüze)...");
     
     // 1900'den 2026'ya kadar tüm yılları tara
-    for (let year = 2026; year >= 1900; year--) {
+    for (let year = 2026; year >= 2010; year--) {
         console.log(`📅 ${year} taranıyor...`);
         let yearCount = 0;
         
